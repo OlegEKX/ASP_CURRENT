@@ -1,0 +1,21 @@
+﻿@model Question
+
+@{
+    ViewData["Title"] = "Результат";
+    bool isCorrect = (bool)ViewBag.IsCorrect;
+}
+
+<h2>@Model.Text</h2>
+
+<p>@(isCorrect ? "Правильный ответ!" : "Неправильный ответ.")</p>
+
+@if (!string.IsNullOrEmpty(ViewBag.Explanation))
+{
+        <p>Пояснение: @ViewBag.Explanation</p>
+}
+
+<a asp-controller="Marathon" asp-action="Question" asp-route-id="@(Model.Id + 1)">Следующий вопрос</a>
+
+<br />
+<br />
+<a role="button" class="btn btn-secondary btn-lg mx-2" asp-controller="Home" asp-action="Index">Завершить Марафон</a>

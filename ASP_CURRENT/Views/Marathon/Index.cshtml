@@ -1,0 +1,20 @@
+﻿@model List<Question>
+@{
+    ViewData["Title"] = "Марафон";
+}
+
+<div class="text-center">
+    <a href="#">
+        <img src="~/images/exam-papers.png" alt="Экзаменационные билеты" class="img-fluid" style="max-width: 200px;"/>
+    </a>
+    <h2 class="mt-3">Все 20 вопросов</h2>
+    <p class="lead">Отличное испытание перед настоящим экзаменом</p>
+    <div class="mt-4">
+        <a class="btn btn-primary btn-lg" asp-controller="Marathon" asp-action="Question" asp-route-id="0">Начать марафон</a>
+        @*<a asp-controller="Marathon" asp-action="Start" class="btn btn-primary btn-lg">Начать марафон</a>*@
+        <br/>
+        <a asp-controller="Home" asp-action="Index">Назад</a>
+    </div>
+    @*<p class="mt-3">Вы всегда можете остановиться и продолжить позже</p>*@
+    @*Функция будет реализована*@
+</div>
