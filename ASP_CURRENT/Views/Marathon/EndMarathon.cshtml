@@ -1,0 +1,17 @@
+﻿@model Question
+@{
+	ViewData["Title"] = "Марафон завершен";
+	bool isCorrectSecond = (bool)ViewBag.isCorrectSecond;
+}
+
+<h2>Марафон завершен!!!</h2>
+
+<br />
+<br />
+
+<h3>@Model.Text</h3>
+
+<p>@(isCorrectSecond ? "Правильный ответ!" : "Неправильный ответ.")</p>
+
+<p>Пояснение: @Model.Explanation</p>
+<a class="btn btn-primary btn-lg" asp-controller="Home" asp-action="Index">Вернуться на главную</a>
