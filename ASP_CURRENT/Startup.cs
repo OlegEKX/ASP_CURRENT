@@ -1,5 +1,7 @@
+using ASP_TrafficRules.Db;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -22,7 +24,16 @@ namespace ASP_CURRENT
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddSingleton<IQuestionStorage, InMemoryQuestionStorage>();
+            // получаем строку подключения из файла конфигурации
+            string connection = Configuration.GetConnectionString("TrafficRules");   // строка соединения
+
+			// добавляем контекст MobileContext в качестве сервиса в приложение  
+			// Если нужно будетв каком-то классе обратиться к базе данных, то просто нужно будет написать такой тип DataBaseContext
+			services.AddDbContext<DataBaseContext>(options =>
+                options.UseSqlServer(connection));
+
+
+            services.AddSingleton<IQuestionStorage, QuestionDbStorage>();
             services.AddControllersWithViews();
         }
 

@@ -2,7 +2,7 @@
 
 namespace ASP_CURRENT.Models
 {
-    public class Question
+    public class QuestionViewModel
     {
         private static int unicId = 0;
         public int Id { get; set; }   // Уникальный идентификатор вопроса
@@ -15,12 +15,12 @@ namespace ASP_CURRENT.Models
 
         public string Explanation { get; set; }  // Пояснение к правильному ответу (необязательное поле)
 
-        public Question()
+        public QuestionViewModel()
         {
             Options = new List<string>();
         }
 
-        public Question(string text, List<string> options, int correctAnswerIndex, string explanation)
+        public QuestionViewModel(string text, List<string> options, int correctAnswerIndex, string explanation)
         {
             
             Id = unicId;
@@ -31,7 +31,7 @@ namespace ASP_CURRENT.Models
             unicId++;
         }
 
-        public Question(string text, List<string> options, int correctAnswerIndex)
+        public QuestionViewModel(string text, List<string> options, int correctAnswerIndex)
         {
             unicId++;
             Id = unicId;

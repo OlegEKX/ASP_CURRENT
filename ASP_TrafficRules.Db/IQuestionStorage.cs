@@ -1,7 +1,8 @@
-﻿using ASP_CURRENT.Models;
+﻿using ASP_TrafficRules.Db.Models;
+using System;
 using System.Collections.Generic;
 
-namespace ASP_CURRENT
+namespace ASP_TrafficRules.Db
 {
     public interface IQuestionStorage
     {
@@ -9,6 +10,6 @@ namespace ASP_CURRENT
 
         List<Question> GetAllQuestions();
 
-        Question GetQuestion(int id);
+        Question GetQuestion(Guid id);
     }
 }

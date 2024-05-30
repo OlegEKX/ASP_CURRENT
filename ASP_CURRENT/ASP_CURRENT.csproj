@@ -4,4 +4,8 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\ASP_TrafficRules.Db\ASP_TrafficRules.Db.csproj" />
+  </ItemGroup>
+
 </Project>
