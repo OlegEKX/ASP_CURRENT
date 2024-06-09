@@ -1,39 +1,59 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using ASP_CURRENT.Models;
+using ASP_TrafficRules.Db;
+using ASP_TrafficRules.Db.Models;
+using Microsoft.AspNetCore.Mvc;
+using System;
+using System.Linq;
 
 namespace ASP_CURRENT.Controllers
 {
     public class MarathonController : Controller
     {
-        private readonly IQuestionStorage questionStorage;
+		private readonly DataBaseContext databaseContext;
+		private readonly IQuestionStorage questionStorage;
 
-        public MarathonController(IQuestionStorage questionStorage)
+        public MarathonController(/*IQuestionStorage questionStorage, */DataBaseContext databaseContext)
         {
-            this.questionStorage = questionStorage;
-        }
+            //this.questionStorage = questionStorage;
+			this.databaseContext = databaseContext;
+		}
 
         public IActionResult Index()
         {
-            var questions = questionStorage.GetAllQuestions();
+            var questions = databaseContext.Questions.ToList();
+            //var questions = questionStorage.GetAllQuestions();
             return View(questions);
             /*return View();*/
         }
         
-        public IActionResult Question(int id)
+        public IActionResult Question(Guid id)
         {
-            var question = questionStorage.GetQuestion(id);
-            var allQuestions = questionStorage.GetAllQuestions();
+            var question = databaseContext.Questions.FirstOrDefault(question => question.Id == id);
+			//var question = questionStorage.GetQuestion(id);
+
+			var allQuestions = databaseContext.Questions.ToList();
+			//var allQuestions = questionStorage.GetAllQuestions();
+
             int countOfQuestions = allQuestions.Count;
             if (question == null)
             {
                 return NotFound();
             }
 
-            // додумать логику прохождения последнего вопроса 
-            // и придумать обработку последнего вопроса (чтобы после ответа на последний вопрос появлялась кнопка какая-нибудь)
-            if (question.Id != countOfQuestions)
+            var questionViewModel = new QuestionViewModel()
+            {
+                Id = question.Id,
+                Text = question.Text,
+                Options = question.Options,
+                CorrectAnswerIndex = question.CorrectAnswerIndex,
+                Explanation = question.Explanation
+            };
+            
+
+            if (question.Id != allQuestions[countOfQuestions].Id)
             {
                 ViewBag.CountOfQuestions = countOfQuestions;
-                return View(question);
+                return View(questionViewModel);
             }
             else
             {
@@ -44,36 +64,65 @@ namespace ASP_CURRENT.Controllers
         }
 
         [HttpPost]
-        public IActionResult Answer(int id, int selectedAnswerIndex)
+        public IActionResult Answer(Guid id, int selectedAnswerIndex)
         {
-            var question = questionStorage.GetQuestion(id);
+			var allQuestions = databaseContext.Questions.ToList();
+            var countOfQuestions = allQuestions.Count;
+
+			var question = databaseContext.Questions.FirstOrDefault(question => question.Id == id);
+            //var question = questionStorage.GetQuestion(id);
+
+            var questionViewModel = new QuestionViewModel()
+            {
+                Id = question.Id,
+                Text = question.Text,
+                Options = question.Options,
+                CorrectAnswerIndex = question.CorrectAnswerIndex,
+                Explanation = question.Explanation
+            };
+
+
             if (question == null)
             {
                 return NotFound();
             }
 
-            if (id == questionStorage.GetAllQuestions().Count - 1)
-            {
+            
+            if (id == allQuestions[countOfQuestions].Id)
+				{
                 /*ViewBag.Question
                 ViewBag.Explanation*/
                 bool isCorrectSecond = question.CorrectAnswerIndex == selectedAnswerIndex;
                 ViewBag.IsCorrectSecond = isCorrectSecond;
 
 
-                return View("EndMarathon", question);
+                return View("EndMarathon", questionViewModel);
             }
+
+            
 
             bool isCorrect = question.CorrectAnswerIndex == selectedAnswerIndex;
             ViewBag.IsCorrect = isCorrect;
             ViewBag.Explanation = question.Explanation;
-            return View("Result", question);
+            ViewBag.AllQuestions = allQuestions;
+            return View("Result", questionViewModel);
         }
 
-        public IActionResult Explanation(int id)
+        public IActionResult Explanation(Guid id)
         {
             var question = questionStorage.GetQuestion(id);
             ViewBag.Explanation = question.Explanation;
-            return View("Explanation", question);
+
+            var questionViewModel = new QuestionViewModel()
+            {
+                Id = question.Id,
+                Text = question.Text,
+                Options = question.Options,
+                CorrectAnswerIndex = question.CorrectAnswerIndex,
+                Explanation = question.Explanation
+            };
+
+            return View("Explanation", questionViewModel);
         }
 
         public IActionResult EndMarathon()

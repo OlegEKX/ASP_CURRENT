@@ -10,7 +10,7 @@
     <h2 class="mt-3">Все 20 вопросов</h2>
     <p class="lead">Отличное испытание перед настоящим экзаменом</p>
     <div class="mt-4">
-        <a class="btn btn-primary btn-lg" asp-controller="Marathon" asp-action="Question" asp-route-id="0">Начать марафон</a>
+        <a class="btn btn-primary btn-lg" asp-controller="Marathon" asp-action="Question" asp-route-id="@Model[0].Id">Начать марафон</a>
         @*<a asp-controller="Marathon" asp-action="Start" class="btn btn-primary btn-lg">Начать марафон</a>*@
         <br/>
         <br />

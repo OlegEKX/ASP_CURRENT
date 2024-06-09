@@ -33,7 +33,7 @@ namespace ASP_CURRENT
                 options.UseSqlServer(connection));
 
 
-            services.AddSingleton<IQuestionStorage, QuestionDbStorage>();
+            services.AddTransient<IQuestionStorage, QuestionDbStorage>();
             services.AddControllersWithViews();
         }
 

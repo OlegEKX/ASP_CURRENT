@@ -1,5 +1,4 @@
-﻿
-using ASP_TrafficRules.Db.Models;
+﻿using ASP_TrafficRules.Db.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,10 +14,42 @@ namespace ASP_TrafficRules.Db
 			this.databaseContext = databaseContext;
 		}
 
+		public List<Question> allQuestions
+		{
+			get
+			{
+				return databaseContext.Questions.ToList();
+			}
+		}
 
+        // по идее программе этот метод не нужен, но сделал, чтобы повторить действия из видео курса
+		public void Add(Question question)
+		{
+			databaseContext.Questions.Add(question);
+			databaseContext.SaveChanges();
+		}
 
-        // ВСЕ ВОПРОСЫ 
-        /*public List<Question> questions = new List<Question>()
+		public List<Question> GetAllQuestions()
+		{
+			return databaseContext.Questions.ToList();
+		}
+
+		public Question GetQuestion(Guid id)
+		{
+			return databaseContext.Questions.FirstOrDefault(question => question.Id == id);
+
+			/*foreach (var question in questions)
+            {
+                if (question.Id == id)
+                {
+                    return question;
+                }
+            }
+            return null;*/
+		}
+
+		// ВСЕ ВОПРОСЫ 
+		/*public List<Question> questions = new List<Question>()
         {
        *//*1*//*new Question(
                 "В каком случае водитель совершит вынужденную остановку?",
@@ -239,39 +270,6 @@ namespace ASP_TrafficRules.Db
                 ),*//*
         };*/
 
-        public List<Question> allQuestions
-        {
-            get
-            {
-                return databaseContext.Questions.ToList();
-            }
-        }
 
-        public void Add(Question question)
-        {
-			databaseContext.Questions.Add(question);
-            databaseContext.SaveChanges();
-		}
-
-
-        public List<Question> GetAllQuestions()
-        {
-            return databaseContext.Questions.ToList();
-        }
-
-        public Question GetQuestion(Guid id)
-        {
-            return databaseContext.Questions.FirstOrDefault(question => question.Id == id);
-
-
-			/*foreach (var question in questions)
-            {
-                if (question.Id == id)
-                {
-                    return question;
-                }
-            }
-            return null;*/
-		}
-    }
+	}
 }

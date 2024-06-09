@@ -1,11 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace ASP_CURRENT.Models
 {
     public class QuestionViewModel
     {
-        private static int unicId = 0;
-        public int Id { get; set; }   // Уникальный идентификатор вопроса
+        //private static int unicId = 0;
+        public Guid Id { get; set; }   // Уникальный идентификатор вопроса
 
         public string Text { get; set; }  // Текст вопроса
 
@@ -15,7 +16,7 @@ namespace ASP_CURRENT.Models
 
         public string Explanation { get; set; }  // Пояснение к правильному ответу (необязательное поле)
 
-        public QuestionViewModel()
+        /*public QuestionViewModel()
         {
             Options = new List<string>();
         }
@@ -38,6 +39,6 @@ namespace ASP_CURRENT.Models
             Text = text;
             Options = options;
             CorrectAnswerIndex = correctAnswerIndex;
-        }
+        }*/
     }
 }
