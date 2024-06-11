@@ -2,7 +2,9 @@
 using ASP_TrafficRules.Db;
 using ASP_TrafficRules.Db.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace ASP_CURRENT.Controllers
@@ -21,9 +23,33 @@ namespace ASP_CURRENT.Controllers
         public IActionResult Index()
         {
             var questions = databaseContext.Questions.ToList();
+
+            List<QuestionViewModel> questionsViewModel = new List<QuestionViewModel>();
+            foreach (var item in questions)
+            {
+                var questionViewModel = new QuestionViewModel()
+                {
+                    Id = item.Id,
+                    Text = item.Text,
+                    Options = item.Options.Select(option => new QuestionOptionsViewModel
+                    {
+                        Id = option.Id,
+                        Text = option.Text,
+                        QuestionId = option.Id,
+                        Question = option.Question
+                    }).ToList(),
+                    CorrectAnswerIndex = item.CorrectAnswerIndex,
+                    Explanation = item.Explanation
+                };
+
+                questionsViewModel.Add(questionViewModel);
+            }
+
+            return View(questionsViewModel);
+
             //var questions = questionStorage.GetAllQuestions();
-            return View(questions);
-            /*return View();*/
+            /*return View(questions);*/
+            
         }
         
         public IActionResult Question(Guid id)
@@ -44,11 +70,17 @@ namespace ASP_CURRENT.Controllers
             {
                 Id = question.Id,
                 Text = question.Text,
-                Options = question.Options,
+                Options = question.Options.Select(option => new QuestionOptionsViewModel
+                {
+                    Id = option.Id,
+                    Text = option.Text,
+                    QuestionId = option.Id,
+                    Question = option.Question
+                }).ToList(), // создает новую коллекцию, где каждый элемент - это значение свойства Text из каждого объекта QuestionOptionsМетод ToList преобразует результат работы Select (который является IEnumerable<string>) в List<string>.
                 CorrectAnswerIndex = question.CorrectAnswerIndex,
                 Explanation = question.Explanation
             };
-            
+
 
             if (question.Id != allQuestions[countOfQuestions].Id)
             {
@@ -76,7 +108,13 @@ namespace ASP_CURRENT.Controllers
             {
                 Id = question.Id,
                 Text = question.Text,
-                Options = question.Options,
+                Options = question.Options.Select(option => new QuestionOptionsViewModel
+                {
+                    Id = option.Id,
+                    Text = option.Text,
+                    QuestionId = option.Id,
+                    Question = option.Question
+                }).ToList(), // создает новую коллекцию, где каждый элемент - это значение свойства Text из каждого объекта QuestionOptionsМетод ToList преобразует результат работы Select (который является IEnumerable<string>) в List<string>.
                 CorrectAnswerIndex = question.CorrectAnswerIndex,
                 Explanation = question.Explanation
             };
@@ -117,7 +155,13 @@ namespace ASP_CURRENT.Controllers
             {
                 Id = question.Id,
                 Text = question.Text,
-                Options = question.Options,
+                Options = question.Options.Select(option => new QuestionOptionsViewModel 
+                {
+                    Id = option.Id,
+                    Text = option.Text,
+                    QuestionId = option.Id,
+                    Question = option.Question
+                }).ToList(), // создает новую коллекцию, где каждый элемент - это значение свойства Text из каждого объекта QuestionOptionsМетод ToList преобразует результат работы Select (который является IEnumerable<string>) в List<string>.
                 CorrectAnswerIndex = question.CorrectAnswerIndex,
                 Explanation = question.Explanation
             };

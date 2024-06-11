@@ -9,7 +9,7 @@ namespace ASP_TrafficRules.Db.Models
 
         public string Text { get; set; }  // Текст вопроса
 
-        public List<string> Options { get; set; }  // Список возможных ответов
+        public List<QuestionOptions> Options { get; set; }/* = new List<QuestionOptions>();*/  // Список возможных ответов
 
         public int CorrectAnswerIndex { get; set; }  // Индекс правильного ответа в списке Options
 

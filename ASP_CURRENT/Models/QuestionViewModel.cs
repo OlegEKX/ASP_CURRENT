@@ -10,7 +10,7 @@ namespace ASP_CURRENT.Models
 
         public string Text { get; set; }  // Текст вопроса
 
-        public List<string> Options { get; set; }  // Список возможных ответов
+        public List<QuestionOptionsViewModel> Options { get; set; }/* = new List<QuestionOptionsViewModel>();*/  // Список возможных ответов
 
         public int CorrectAnswerIndex { get; set; }  // Индекс правильного ответа в списке Options
 
