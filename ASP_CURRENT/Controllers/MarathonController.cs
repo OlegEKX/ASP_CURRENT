@@ -12,7 +12,7 @@ namespace ASP_CURRENT.Controllers
     public class MarathonController : Controller
     {
 		private readonly DataBaseContext databaseContext;
-		private readonly IQuestionStorage questionStorage;
+		//private readonly IQuestionStorage questionStorage;
 
         public MarathonController(/*IQuestionStorage questionStorage, */DataBaseContext databaseContext)
         {
@@ -148,7 +148,8 @@ namespace ASP_CURRENT.Controllers
 
         public IActionResult Explanation(Guid id)
         {
-            var question = questionStorage.GetQuestion(id);
+            //var question = questionStorage.GetQuestion(id);
+            var question = databaseContext.Questions.FirstOrDefault(question => question.Id == id);
             ViewBag.Explanation = question.Explanation;
 
             var questionViewModel = new QuestionViewModel()
