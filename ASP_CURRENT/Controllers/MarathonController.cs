@@ -31,7 +31,7 @@ namespace ASP_CURRENT.Controllers
                 {
                     Id = item.Id,
                     Text = item.Text,
-                    Options = item.Options.Select(option => new QuestionOptionsViewModel
+                    Options = item.QuestionOptions.Select(option => new QuestionOptionsViewModel
                     {
                         Id = option.Id,
                         Text = option.Text,
@@ -70,7 +70,7 @@ namespace ASP_CURRENT.Controllers
             {
                 Id = question.Id,
                 Text = question.Text,
-                Options = question.Options.Select(option => new QuestionOptionsViewModel
+                Options = question.QuestionOptions.Select(option => new QuestionOptionsViewModel
                 {
                     Id = option.Id,
                     Text = option.Text,
@@ -108,7 +108,7 @@ namespace ASP_CURRENT.Controllers
             {
                 Id = question.Id,
                 Text = question.Text,
-                Options = question.Options.Select(option => new QuestionOptionsViewModel
+                Options = question.QuestionOptions.Select(option => new QuestionOptionsViewModel
                 {
                     Id = option.Id,
                     Text = option.Text,
@@ -156,7 +156,7 @@ namespace ASP_CURRENT.Controllers
             {
                 Id = question.Id,
                 Text = question.Text,
-                Options = question.Options.Select(option => new QuestionOptionsViewModel 
+                Options = question.QuestionOptions.Select(option => new QuestionOptionsViewModel 
                 {
                     Id = option.Id,
                     Text = option.Text,
