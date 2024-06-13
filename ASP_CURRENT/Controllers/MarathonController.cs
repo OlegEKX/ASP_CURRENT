@@ -27,9 +27,7 @@ namespace ASP_CURRENT.Controllers
             {
                 return NotFound();
             }
-
-            // додумать логику прохождения последнего вопроса 
-            // и придумать обработку последнего вопроса (чтобы после ответа на последний вопрос появлялась кнопка какая-нибудь)
+            
             if (question.Id != countOfQuestions)
             {
                 ViewBag.CountOfQuestions = countOfQuestions;
@@ -39,8 +37,6 @@ namespace ASP_CURRENT.Controllers
             {
                 return RedirectToAction("EndMarathon");
             }
-            //return View(question);
-
         }
 
         [HttpPost]
