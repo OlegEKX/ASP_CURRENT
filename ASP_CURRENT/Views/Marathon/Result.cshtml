@@ -5,8 +5,9 @@
     bool isCorrect = (bool)ViewBag.IsCorrect;
     var allQuestions = ViewBag.AllQuestions;
 
-    var currentIndex = allQuestions.IndexOf(Model.Id);
-    var indexNextQuestion = allQuestions[currentIndex + 1];
+    var question = ViewBag.Question;
+    var currentIndex = allQuestions.IndexOf(question);
+    var idOfNextQuestion = allQuestions[currentIndex + 1].Id;
 }
 
 <h2>@Model.Text</h2>
@@ -18,7 +19,7 @@
         <p>Пояснение: @ViewBag.Explanation</p>
 }
 
-<a asp-controller="Marathon" asp-action="Question" asp-route-id="@indexNextQuestion">Следующий вопрос</a>
+<a asp-controller="Marathon" asp-action="Question" asp-route-id="@idOfNextQuestion">Следующий вопрос</a>
 
 <br />
 <br />

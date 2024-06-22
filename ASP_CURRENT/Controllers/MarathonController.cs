@@ -3,9 +3,11 @@ using ASP_TrafficRules.Db;
 using ASP_TrafficRules.Db.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
+using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 
 namespace ASP_CURRENT.Controllers
 {
@@ -23,23 +25,23 @@ namespace ASP_CURRENT.Controllers
         public IActionResult Index()
         {
             var questions = databaseContext.Questions.ToList();
+            var options = databaseContext.QuestionOptions.ToList();
 
             List<QuestionViewModel> questionsViewModel = new List<QuestionViewModel>();
-            foreach (var item in questions)
+            foreach (var question in questions)
             {
+                question.QuestionOptions = options.Where(x => x.QuestionId == question.Id).ToList();
+
                 var questionViewModel = new QuestionViewModel()
                 {
-                    Id = item.Id,
-                    Text = item.Text,
-                    Options = item.QuestionOptions.Select(option => new QuestionOptionsViewModel
+                    Id = question.Id,
+                    Text = question.Text,
+                    QuestionOptions = question.QuestionOptions.Select(option => new QuestionOptionsViewModel(option.Id, option.Text, option.QuestionId)
                     {
-                        Id = option.Id,
-                        Text = option.Text,
-                        QuestionId = option.Id,
                         Question = option.Question
                     }).ToList(),
-                    CorrectAnswerIndex = item.CorrectAnswerIndex,
-                    Explanation = item.Explanation
+                    CorrectAnswerIndex = question.CorrectAnswerIndex,
+                    Explanation = question.Explanation
                 };
 
                 questionsViewModel.Add(questionViewModel);
@@ -66,23 +68,22 @@ namespace ASP_CURRENT.Controllers
                 return NotFound();
             }
 
+            question.QuestionOptions = databaseContext.QuestionOptions.Where(x => x.QuestionId == id).ToList();
+
             var questionViewModel = new QuestionViewModel()
             {
                 Id = question.Id,
                 Text = question.Text,
-                Options = question.QuestionOptions.Select(option => new QuestionOptionsViewModel
+                QuestionOptions = question.QuestionOptions.Select(option => new QuestionOptionsViewModel(option.Id, option.Text, option.QuestionId)
                 {
-                    Id = option.Id,
-                    Text = option.Text,
-                    QuestionId = option.Id,
                     Question = option.Question
-                }).ToList(), // создает новую коллекцию, где каждый элемент - это значение свойства Text из каждого объекта QuestionOptionsМетод ToList преобразует результат работы Select (который является IEnumerable<string>) в List<string>.
+                }).ToList(),
                 CorrectAnswerIndex = question.CorrectAnswerIndex,
                 Explanation = question.Explanation
             };
 
 
-            if (question.Id != allQuestions[countOfQuestions].Id)
+            if (allQuestions.IndexOf(question) != countOfQuestions)
             {
                 ViewBag.CountOfQuestions = countOfQuestions;
                 return View(questionViewModel);
@@ -104,17 +105,17 @@ namespace ASP_CURRENT.Controllers
 			var question = databaseContext.Questions.FirstOrDefault(question => question.Id == id);
             //var question = questionStorage.GetQuestion(id);
 
+            //var questionOptions = databaseContext.QuestionOptions.Where(x => x.QuestionId == id).ToList();
+            question.QuestionOptions = databaseContext.QuestionOptions.Where(x => x.QuestionId == id).ToList();
+
             var questionViewModel = new QuestionViewModel()
             {
                 Id = question.Id,
                 Text = question.Text,
-                Options = question.QuestionOptions.Select(option => new QuestionOptionsViewModel
+                QuestionOptions = question.QuestionOptions.Select(option => new QuestionOptionsViewModel(option.Id, option.Text, option.QuestionId)
                 {
-                    Id = option.Id,
-                    Text = option.Text,
-                    QuestionId = option.Id,
                     Question = option.Question
-                }).ToList(), // создает новую коллекцию, где каждый элемент - это значение свойства Text из каждого объекта QuestionOptionsМетод ToList преобразует результат работы Select (который является IEnumerable<string>) в List<string>.
+                }).ToList(),
                 CorrectAnswerIndex = question.CorrectAnswerIndex,
                 Explanation = question.Explanation
             };
@@ -126,7 +127,7 @@ namespace ASP_CURRENT.Controllers
             }
 
             
-            if (id == allQuestions[countOfQuestions].Id)
+            if (id == allQuestions[countOfQuestions - 1].Id)
 				{
                 /*ViewBag.Question
                 ViewBag.Explanation*/
@@ -142,6 +143,7 @@ namespace ASP_CURRENT.Controllers
             bool isCorrect = question.CorrectAnswerIndex == selectedAnswerIndex;
             ViewBag.IsCorrect = isCorrect;
             ViewBag.Explanation = question.Explanation;
+            ViewBag.Question = question;
             ViewBag.AllQuestions = allQuestions;
             return View("Result", questionViewModel);
         }
@@ -150,22 +152,23 @@ namespace ASP_CURRENT.Controllers
         {
             //var question = questionStorage.GetQuestion(id);
             var question = databaseContext.Questions.FirstOrDefault(question => question.Id == id);
-            ViewBag.Explanation = question.Explanation;
+
+            question.QuestionOptions = databaseContext.QuestionOptions.Where(x => x.QuestionId == id).ToList();
 
             var questionViewModel = new QuestionViewModel()
             {
                 Id = question.Id,
                 Text = question.Text,
-                Options = question.QuestionOptions.Select(option => new QuestionOptionsViewModel 
+                QuestionOptions = question.QuestionOptions.Select(option => new QuestionOptionsViewModel(option.Id, option.Text, option.QuestionId)
                 {
-                    Id = option.Id,
-                    Text = option.Text,
-                    QuestionId = option.Id,
                     Question = option.Question
-                }).ToList(), // создает новую коллекцию, где каждый элемент - это значение свойства Text из каждого объекта QuestionOptionsМетод ToList преобразует результат работы Select (который является IEnumerable<string>) в List<string>.
+                }).ToList(),
                 CorrectAnswerIndex = question.CorrectAnswerIndex,
                 Explanation = question.Explanation
             };
+            ViewBag.Explanation = questionViewModel.Explanation;
+
+            // создает новую коллекцию, где каждый элемент - это значение свойства Text из каждого объекта QuestionOptionsМетод ToList преобразует результат работы Select (который является IEnumerable<string>) в List<string>.
 
             return View("Explanation", questionViewModel);
         }

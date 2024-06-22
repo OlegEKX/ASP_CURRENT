@@ -2,6 +2,8 @@
 
 @{
     ViewData["Title"] = "Вопрос";
+    var questionOptionsList = Model.QuestionOptions.ToList();
+    //int selectedAnswerIndex = 0;
 }
 
 
@@ -9,19 +11,20 @@
 
     <form asp-action="Answer" method="post">
         <input type="hidden" name="id" value="@Model.Id" />
-    @for (int i = 0; i < Model.Options.Count; i++)
-    {
+        @for (int i = 0; i < questionOptionsList.Count; i++)
+        {
+            
                 <div>
-
-                    <button type="submit" name="selectedAnswerIndex" value="@i">@Model.Options[i]</button>
+                    
+                    <button type="submit" name="selectedAnswerIndex" value="@i">@questionOptionsList[i].Text</button>
                     <br />
-                <br />
+                    <br />
                 </div>
 
-    }
+        }
 
         <div class="text-right">
-            <a role="button" class="btn btn-secondary btn-lg mx-2" asp-controller="Marathon" asp-action="Explanation" title="Пояснение к вопросу" style="font-weight: bold; font-size: 24px;">?</a>
+            <a role="button" class="btn btn-secondary btn-lg mx-2" asp-controller="Marathon" asp-action="Explanation" asp-route-id="@Model.Id" title="Пояснение к вопросу" style="font-weight: bold; font-size: 24px;">?</a>
         </div>
 
 

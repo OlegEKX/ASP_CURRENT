@@ -276,9 +276,9 @@ namespace ASP_TrafficRules.Db
 
             modelBuilder.Entity<QuestionOptions>().HasData(
                 new QuestionOptions("Ответ 1 на вопрос 1", question1Id),
-                new QuestionOptions("Ответ 2 на вопрос 1", question1Id), 
-                new QuestionOptions("Ответ 1 на вопрос 2", question1Id), 
-                new QuestionOptions("Ответ 2 на вопрос 2", question1Id)        // Add more options as needed
+                new QuestionOptions("Ответ 2 на вопрос 1", question1Id),
+                new QuestionOptions("Ответ 1 на вопрос 2", question2Id),
+                new QuestionOptions("Ответ 2 на вопрос 2", question2Id)
             );
         }
     }

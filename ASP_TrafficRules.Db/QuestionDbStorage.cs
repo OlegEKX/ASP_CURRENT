@@ -1,7 +1,9 @@
 ﻿using ASP_TrafficRules.Db.Models;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 
 namespace ASP_TrafficRules.Db
 {
@@ -36,7 +38,7 @@ namespace ASP_TrafficRules.Db
 
 		public Question GetQuestion(Guid id)
 		{
-			return databaseContext.Questions.FirstOrDefault(question => question.Id == id);
+			return databaseContext.Questions.Include(x => x.QuestionOptions).FirstOrDefault(question => question.Id == id);
 
 			/*foreach (var question in questions)
             {
@@ -47,6 +49,13 @@ namespace ASP_TrafficRules.Db
             }
             return null;*/
 		}
+
+        /*public QuestionOptions GetQuestionOptions(Guid id)
+        {
+
+        }*/
+
+
 
 		// ВСЕ ВОПРОСЫ 
 		/*public List<Question> questions = new List<Question>()

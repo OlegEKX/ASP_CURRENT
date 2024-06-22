@@ -9,5 +9,12 @@ namespace ASP_CURRENT.Models
         public string Text { get; set; }
         public Guid QuestionId { get; set; }
         public Question Question { get; set; }
+
+        public QuestionOptionsViewModel(Guid id, string text, Guid questionId)
+        {
+            Id = id;
+            Text = text;
+            QuestionId = questionId;
+        }
     }
 }
